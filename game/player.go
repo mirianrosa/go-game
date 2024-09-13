@@ -71,3 +71,10 @@ func (p *Player) Draw(screen *ebiten.Image) {
 
 	screen.DrawImage(p.image, op)
 }
+
+func (p *Player) PlayerArea() DivRectangle {
+	naveBounds := p.image.Bounds()
+
+	return NewDivRectangle(p.position.X, p.position.Y, float64(naveBounds.Dx()), float64(naveBounds.Dy()))
+
+}

@@ -41,3 +41,10 @@ func (l *Laser) Draw(screen *ebiten.Image) {
 
 	screen.DrawImage(l.image, op)
 }
+
+func (l *Laser) LaserArea() DivRectangle {
+	laserBounds := l.image.Bounds()
+
+	return NewDivRectangle(l.position.X, l.position.Y, float64(laserBounds.Dx()), float64(laserBounds.Dy()))
+
+}
