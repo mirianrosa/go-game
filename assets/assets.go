@@ -14,7 +14,11 @@ import (
 //go:embed *
 var assets embed.FS
 
-var PlayerSprite = mustLoadImage("player.png")
+var PlayerSprite = mustLoadImage("playerShip1.png")
+var KeyboardKeyLeftSprites = mustLoadImage("keyboard/keyboard_arrow_left.png")
+var KeyboardKeyRightSprites = mustLoadImage("keyboard/keyboard_arrow_right.png")
+var KeyboardKeySpaceSprites = mustLoadImage("keyboard/keyboard_space.png")
+var KeyboardKeyEnterSprites = mustLoadImage("keyboard/keyboard_enter.png")
 
 var MeteorSprites = mustLoadImages("meteors/*.png")
 var LaserSprite = mustLoadImage("laser.png")
@@ -66,8 +70,8 @@ func mustLoadFont(name string) font.Face {
 	}
 
 	face, err := opentype.NewFace(tt, &opentype.FaceOptions{
-		Size:    48,
-		DPI:     72,
+		Size:    27,
+		DPI:     100,
 		Hinting: font.HintingVertical,
 	})
 	if err != nil {
