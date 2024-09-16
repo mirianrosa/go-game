@@ -17,6 +17,7 @@ type Game struct {
 	meteors          []*Meteor
 	meteorSpawnTimer *Timer
 	score            int
+	bestScore        int
 }
 
 func NewGame() *Game {
@@ -31,6 +32,8 @@ func NewGame() *Game {
 		s := FirstStar()
 		g.stars = append(g.stars, s)
 	}
+
+	g.bestScore = 0
 
 	return g
 }
@@ -74,12 +77,17 @@ func (g *Game) Update() error {
 		}
 	}
 
-	for meteorIndex, meteorUnity := range g.meteors {
-		for laserIndex, laserUnity := range g.lasers {
+	for meteorIndex := len(g.meteors) - 1; meteorIndex >= 0; meteorIndex-- {
+		meteorUnity := g.meteors[meteorIndex]
+		for laserIndex := len(g.lasers) - 1; laserIndex >= 0; laserIndex-- {
+			laserUnity := g.lasers[laserIndex]
 			if meteorUnity.MeteorArea().Intersects(laserUnity.LaserArea()) {
+				//fmt.Println("Colisão detectada entre meteoro #", meteorIndex, "e laser #", laserIndex)
+				//fmt.Println("Range de meteoros: ", g.meteors)
 				g.meteors = append(g.meteors[:meteorIndex], g.meteors[meteorIndex+1:]...)
 				g.lasers = append(g.lasers[:laserIndex], g.lasers[laserIndex+1:]...)
 				g.score += 1
+				break
 			}
 		}
 	}
@@ -103,7 +111,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		l.Draw(screen)
 	}
 
-	text.Draw(screen, fmt.Sprintf("Pontos: %d", g.score), assets.ScoreFont, 20, 100, color.White)
+	text.Draw(screen, fmt.Sprintf("Seu Melhor: %d", g.bestScore), assets.ScoreFont, 15, 50, color.White)
+	text.Draw(screen, fmt.Sprintf("Pontos: %d", g.score), assets.ScoreFont, 15, 100, color.RGBA{R: 255, G: 255, B: 0, A: 255})
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -124,10 +133,14 @@ func (g *Game) Reset() {
 	g.lasers = nil
 	g.meteorSpawnTimer.Reset()
 	g.starSpawnTimer.Reset()
-	g.score = 0
 	g.stars = nil
 	for i := 1; i <= 10; i++ {
 		s := FirstStar()
 		g.stars = append(g.stars, s)
 	}
+
+	if g.score > g.bestScore {
+		g.bestScore = g.score
+	}
+	g.score = 0
 }
