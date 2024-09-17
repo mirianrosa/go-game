@@ -7,37 +7,30 @@ import (
 	"golang.org/x/exp/rand"
 )
 
+const (
+	speed = 4.5
+)
+
 type Star struct {
 	image    *ebiten.Image
 	speed    float64
 	position Vector
 }
 
-func FirstStar() *Star {
+func NewStar(isFirstStars bool) *Star {
 	image := assets.StarsSprites[rand.Intn(len(assets.StarsSprites))] // Seleciona aleatoriamente uma das imagens de estrelas dos assets
 
-	speed := (rand.Float64() * 1) // Escolhe uma velocidade diferente para cada estrela que spawna
-
-	position := Vector{
-		X: rand.Float64() * screenWidth,  // Começa aleatoriamente dentro dos limites da largura da tela
-		Y: rand.Float64() * screenHeight, // Começa aleatoriamente dentro dos limites da altura da tela
-	}
-
-	return &Star{
-		image:    image,
-		speed:    speed,
-		position: position,
-	}
-}
-
-func NewStar() *Star {
-	image := assets.StarsSprites[rand.Intn(len(assets.StarsSprites))] // Seleciona aleatoriamente uma das imagens de estrelas dos assets
-
-	speed := (rand.Float64() * 1) // Escolhe uma velocidade diferente para cada estrela que spawna
-
-	position := Vector{
-		X: rand.Float64() * screenWidth, // Começa aleatoriamente dentro dos limites da largura da tela
-		Y: -100,                         // Começa antes dos limites da tela
+	var position Vector
+	if isFirstStars {
+		position = Vector{
+			X: rand.Float64() * screenWidth,  // Começa aleatoriamente dentro dos limites da largura da tela
+			Y: rand.Float64() * screenHeight, // Começa aleatoriamente dentro dos limites da altura da tela
+		}
+	} else {
+		position = Vector{
+			X: rand.Float64() * screenWidth,
+			Y: -100, // Começa antes dos limites da tela
+		}
 	}
 
 	return &Star{

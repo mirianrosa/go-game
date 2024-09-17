@@ -23,13 +23,13 @@ type Game struct {
 func NewGame() *Game {
 	g := &Game{
 		meteorSpawnTimer: NewTimer(24),
-		starSpawnTimer:   NewTimer(70),
+		starSpawnTimer:   NewTimer(10),
 	}
 	player := NewPlayer(g)
 	g.player = player
 
-	for i := 1; i <= 10; i++ {
-		s := FirstStar()
+	for i := 1; i <= 15; i++ {
+		s := NewStar(true)
 		g.stars = append(g.stars, s)
 	}
 
@@ -47,7 +47,7 @@ func (g *Game) Update() error {
 	if g.starSpawnTimer.IsReady() {
 		g.starSpawnTimer.Reset()
 
-		s := NewStar()
+		s := NewStar(false)
 		g.stars = append(g.stars, s)
 	}
 
@@ -79,9 +79,20 @@ func (g *Game) Update() error {
 
 	for meteorIndex := len(g.meteors) - 1; meteorIndex >= 0; meteorIndex-- {
 		meteorUnity := g.meteors[meteorIndex]
+
+		if meteorUnity.position.Y > screenHeight { // Se o meteoro sair da área visível da tela pela parte inferior, ele pode ser removido
+			g.meteors = append(g.meteors[:meteorIndex], g.meteors[meteorIndex+1:]...)
+			continue
+		}
+
 		for laserIndex := len(g.lasers) - 1; laserIndex >= 0; laserIndex-- {
 			laserUnity := g.lasers[laserIndex]
+			if laserUnity.position.Y < -50 { // Se o laser sair da área visível da tela pela parte superior, ele pode ser removido
+				g.lasers = append(g.lasers[:laserIndex], g.lasers[laserIndex+1:]...)
+				continue
+			}
 			if meteorUnity.MeteorArea().Intersects(laserUnity.LaserArea()) {
+
 				//fmt.Println("Colisão detectada entre meteoro #", meteorIndex, "e laser #", laserIndex)
 				//fmt.Println("Range de meteoros: ", g.meteors)
 				g.meteors = append(g.meteors[:meteorIndex], g.meteors[meteorIndex+1:]...)
@@ -111,8 +122,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		l.Draw(screen)
 	}
 
-	text.Draw(screen, fmt.Sprintf("Seu Melhor: %d", g.bestScore), assets.ScoreFont, 15, 50, color.White)
-	text.Draw(screen, fmt.Sprintf("Pontos: %d", g.score), assets.ScoreFont, 15, 100, color.RGBA{R: 255, G: 255, B: 0, A: 255})
+	text.Draw(screen, fmt.Sprintf("Seu Melhor: %d", g.bestScore), assets.ScoreFontBig, 15, 50, color.White)
+	text.Draw(screen, fmt.Sprintf("Pontos: %d", g.score), assets.ScoreFontBig, 15, 100, color.RGBA{R: 255, G: 255, B: 0, A: 255})
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -123,8 +134,10 @@ func (g *Game) AddLasers(laser *Laser) {
 	g.lasers = append(g.lasers, laser)
 }
 
-func (g *Game) CollisionDetected() {
-	//To do
+func (g *Game) PlayerCollisionDetected() {
+	// To do
+	// Player loses. Pause every movement and creation of stars, meteors, player, lasers.
+	// Ask if want to try again? Press any key to continue...
 }
 
 func (g *Game) Reset() {
@@ -134,8 +147,8 @@ func (g *Game) Reset() {
 	g.meteorSpawnTimer.Reset()
 	g.starSpawnTimer.Reset()
 	g.stars = nil
-	for i := 1; i <= 10; i++ {
-		s := FirstStar()
+	for i := 1; i <= 15; i++ {
+		s := NewStar(true)
 		g.stars = append(g.stars, s)
 	}
 

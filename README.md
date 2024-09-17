@@ -2,7 +2,7 @@
 
 **GO: Desafio do Cinturão** é um jogo 2D em que você pilota uma nave através de uma perigosa região espacial, destruindo meteoros e tentando alcançar a maior pontuação possível. Um único impacto com um meteoro encerra a sua corrida.
 
-![Imagem do Jogo](link...)
+![Imagem do Jogo](https://raw.githubusercontent.com/mirianrosa/go-game/main/assets/readme/screenshot.png)
 
 ## História
 
@@ -51,5 +51,7 @@ go run main.go
 O jogo será executado em uma janela que se abrirá automaticamente.
 
 ## Fontes
-- **Imagens 2D**: Meteoros, nave, lasers e estrelas retirados dos assets grátis do site [Kenney](https://kenney.nl/assets/category:2D).
+
+- **Imagens 2D**: As imagens dos meteoros, naves, lasers, estrelas, planetas e ícones foram retiradas dos assets grátis do site [Kenney](https://kenney.nl/assets/category:2D). Os pacotes específicos utilizados incluem [Space Shooter Redux](https://kenney.nl/assets/space-shooter-redux), [Planets](https://kenney.nl/assets/planets) e [Input Prompts](https://kenney.nl/assets/input-prompts). A imagem do Gopher personalizada foi criada utilizando [Gopherize.me](https://gopherize.me/).
+
 - **Engine**: Desenvolvido com [Ebitengine](https://github.com/hajimehoshi/ebiten), uma engine open source para criação de jogos 2D em Go.
