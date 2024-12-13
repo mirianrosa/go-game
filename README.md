@@ -20,10 +20,6 @@ Agora, todas as atenções da galáxia estão em você. Até onde consegue ir an
 - Ganhe pontos ao destruir meteoros, mas evite qualquer colisão!
 
 ## Jogar
-### Online
-Experimente o jogo diretamente no seu navegador clicando no link abaixo:
-
-[**Jogar no Navegador**](http://seulink.aqui) 
 
 ### Localmente
 
